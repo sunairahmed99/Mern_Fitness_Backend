@@ -8,18 +8,18 @@ exports.Nutritioncreate = tryCatch(async (req, res, next) => {
     foodType: req.body.foodType,
     quantity: req.body.quantity,
     protein: req.body.protein,
-    calories: req.body.calories
+    calories: req.body.calories,
   });
   res.status(200).json({
     status: "success",
-    data: nutrition
+    data: nutrition,
   });
 });
 
-exports.Nutritionall = tryCatch(async (req, res, next)=>{
-  const nutritions = await Workout.find().populate('userId');
+exports.Nutritionall = tryCatch(async (req, res, next) => {
+  const nutritions = await Nutrition.find().populate("userId");
   res.json(nutritions);
-})
+});
 
 exports.Nutritiondelete = tryCatch(async (req, res, next) => {
   const nutritionId = req.params.id;
@@ -35,5 +35,23 @@ exports.Nutritiondelete = tryCatch(async (req, res, next) => {
   res.json({
     message: "Nutrition deleted successfully",
     data: deletedNutrition,
+  });
+});
+
+exports.Nutritionupdate = tryCatch(async (req, res, next) => {
+  const nutritionId = req.params.id;
+
+  const Nutritionupdate = await Nutrition.findByIdAndUpdate(
+    nutritionId,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({
+    status: "success",
+    data: Nutritionupdate,
   });
 });
