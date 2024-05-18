@@ -15,3 +15,25 @@ exports.Nutritioncreate = tryCatch(async (req, res, next) => {
     data: nutrition
   });
 });
+
+exports.Nutritionall = tryCatch(async (req, res, next)=>{
+  const nutritions = await Workout.find().populate('userId');
+  res.json(nutritions);
+})
+
+exports.Nutritiondelete = tryCatch(async (req, res, next) => {
+  const nutritionId = req.params.id;
+
+  const deletedNutrition = await Nutrition.findByIdAndDelete(nutritionId);
+
+  if (!deletedNutrition) {
+    return res.status(404).json({
+      message: "Nutrition not found",
+    });
+  }
+
+  res.json({
+    message: "Nutrition deleted successfully",
+    data: deletedNutrition,
+  });
+});

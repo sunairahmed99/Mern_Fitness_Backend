@@ -16,6 +16,11 @@ exports.Workoutcreate = tryCatch(async (req, res, next) => {
   });
 });
 
+exports.Workoutall = tryCatch(async (req, res, next)=>{
+  const workouts = await Workout.find().populate('userId');
+  res.json(workouts);
+})
+
 exports.Workoutdelete = tryCatch(async (req, res, next) => {
   const workoutId = req.params.id;
 

@@ -1,12 +1,12 @@
 const express = require('express');
-const { Nutritioncreate } = require('../Controllers/NutritionController');
+const { Nutritioncreate, Nutritiondelete } = require('../Controllers/NutritionController');
 
-const WorkoutRouter = express.Router()
-WorkoutRouter.route('/Add').post(Nutritioncreate)
+const NutritionRouter = express.Router()
+NutritionRouter.route('/Add').post(Nutritioncreate)
 // WorkoutRouter.route('/Update/:id').put(Workoutupdate)
-// WorkoutRouter.route('/Delete/:id').delete(Workoutdelete)
+NutritionRouter.route('/Delete/:id').delete(Nutritiondelete)
 
 
 
-module.exports = WorkoutRouter
+module.exports = NutritionRouter
 
