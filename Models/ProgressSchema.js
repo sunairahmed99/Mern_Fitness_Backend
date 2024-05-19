@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const fitnessprogressSchema = new Schema({
+const fitnessprogressSchema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
@@ -45,4 +45,4 @@ const fitnessprogressSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("Progress", fitnessprogressSchema);
+module.exports = mongoose.model("FitnessProgress", fitnessprogressSchema);
