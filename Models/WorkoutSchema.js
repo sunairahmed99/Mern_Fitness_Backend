@@ -22,12 +22,16 @@ const workoutSchema = mongoose.Schema({
     type: Number,
     required: false,
   },
-  category: [
-    {
-      type: String,
+  category: {
+    strength: {
+      type: Number,
       required: true,
     },
-  ],
+    cardio: {
+      type: Number,
+      required: true,
+    },
+  },
   createdate: {
     type: Date,
     default: Date.now,
