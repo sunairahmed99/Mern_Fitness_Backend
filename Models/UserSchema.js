@@ -9,14 +9,18 @@ const UserSchema = mongoose.Schema({
         type:String,
         required:[true, 'name required']
     },
+    phone:{
+        type:Number,
+
+    },
     email:{
         type:String,
+        unique:true,
         required:[true, 'email required'],
         validate:[Validator.isEmail, 'invalid email syntax'],
     },
     image:{
         type:String,
-        required:[true, 'image required']
     },
     role:{
         type:String,
@@ -31,7 +35,6 @@ const UserSchema = mongoose.Schema({
     },
     conform_password:{
         type:String,
-        required:[true, 'password required'],
         minlength:[4, 'password greater than 4 characters'],
         maxlength:[12, 'password less than 12 characters'],
         validate:{
@@ -56,6 +59,7 @@ UserSchema.pre('save',async function(next){
       
     this.password = await bcrypt.hash(this.password, 12) 
     this.conform_password = undefined 
+    console.log('pillay')
     next()
 })
 

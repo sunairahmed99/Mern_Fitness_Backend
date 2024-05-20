@@ -3,16 +3,33 @@ const AppError = require("../Utils/AppError");
 const EmailSend = require("../Utils/ForgotEmail");
 const tryCatch = require("../Utils/tryCatch");
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
 const crypto = require('crypto')
 
+exports.getuser = tryCatch(async(req,res,next)=>{
+
+    let newuser = await users.findById(req.user._id)
+
+    res.status(200).json({
+        status:"success",
+        data:newuser
+    })
+})
 
 exports.RegisterUser = tryCatch(async(req,res,next)=>{
+
+    let image
+
+    if(req.file){
+        image = req.file.filename
+    }
 
     const newuser = await users.create({
 
         name:req.body.name,
         email:req.body.email,
-        image:req.body.image,
+        phone:req.body.phone,
+        image:image,
         password:req.body.password,
         conform_password:req.body.conform_password
     })
@@ -77,13 +94,13 @@ exports.protect = tryCatch(async(req,res,next)=>{
 
     let olduser = await users.findById(decode.id)
 
-    if(!olduser.checkupdatepassword(decode.iat)){
+    if(olduser.checkupdatepassword(decode.iat)){
         return next(new AppError('please login again',404))
     }
 
     req.user = olduser
 
-    console.log(olduser)
+    next()
 })
 
 exports.forgotpass = tryCatch(async(req,res,next)=>{
@@ -95,6 +112,11 @@ exports.forgotpass = tryCatch(async(req,res,next)=>{
     }
 
     let user = await users.findOne({email:email})
+    console.log(user)
+
+    if(user.role === 'admin'){
+        return next(new AppError('cant modify this email',401))
+    }
 
     if(!user){
         return next(new AppError('email not found',404))
@@ -104,7 +126,7 @@ exports.forgotpass = tryCatch(async(req,res,next)=>{
 
     await user.save({validateBeforeSave:false})
 
-    let reseturl = `${req.protocol}://${req.get('host')}/reset/password/${token}`
+    let reseturl = `${req.protocol}://${req.get('host')}/reset/page/${token}`
 
     let message = `copy this link and open in  bowser to change password:${reseturl}`
 
@@ -143,14 +165,14 @@ exports.resetpass = tryCatch(async(req,res,next)=>{
     let user = await users.findOne({passwordResetToken:hashtoken, passwordResetExpire:{$gt:Date.now()}})
 
     if(!user){
-        users.passwordResetToken = undefined
-        users.passwordResetExpire= undefined
-        await user.save()
+        
         return next(new AppError('token expired please login again'))
     }
 
+
     user.password = req.body.password
-    user.conform_password = req.body.conform_password
+    user.passwordResetToken = undefined
+    user.passwordResetExpire = undefined
     await user.save()
 
     let jwttoken = jwt.sign({id:user.id},process.env.SECRET_KEY,{
@@ -162,4 +184,41 @@ exports.resetpass = tryCatch(async(req,res,next)=>{
         jwttoken,
     })
 
+})
+
+exports.updateprofile = tryCatch(async(req,res,next)=>{
+
+    let image
+
+    if(req.file){
+
+        image = req.file.filename
+        let oldimage = req.body.oldimage
+
+        let oldimagepath = `./Multer/images/${oldimage}`
+
+        fs.unlink(oldimagepath, err =>{
+            if(err){
+                console.log('image not deleted',err)
+            }
+            else{
+                console.log('image deletedd')
+            }
+        })
+    }
+
+    let newuser = await users.findByIdAndUpdate(req.params.id,{
+
+        name:req.body.name,
+        phone:req.body.phone,
+        image:image,
+    },{
+        new:true,
+        runValidators:true
+    })
+
+    res.status(200).json({
+        status:"success",
+        data:newuser
+    })
 })
