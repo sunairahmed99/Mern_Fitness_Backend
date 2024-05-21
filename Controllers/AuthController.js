@@ -222,3 +222,25 @@ exports.updateprofile = tryCatch(async(req,res,next)=>{
         data:newuser
     })
 })
+
+exports.updatepassword = tryCatch(async(req,res,next)=>{
+
+    let password = req.body.password
+
+    let user = await users.findById(req.user._id).select('password')
+
+    if(!user){
+        return next(new AppError('user not found',401))
+    }
+
+    if(!user.checkpassword(password,user.password)){
+        return next(new AppError('old password not correct',401))
+    }
+
+    user.password = req.body.newpassword
+    await user.save()
+
+    res.status(200).json({
+        status:"success",
+    })
+})
