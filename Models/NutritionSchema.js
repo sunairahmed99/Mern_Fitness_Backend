@@ -12,12 +12,12 @@ const nutritionSchema = mongoose.Schema({
       required: true,
     },
   ],
-  foodItem: [
+  foodItem: 
     {
-      type: String,
+      type: [String],
       required: true,
     },
-  ],
+  
   quantity: {
     type: Number,
     required: true,
