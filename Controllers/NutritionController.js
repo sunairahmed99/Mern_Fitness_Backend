@@ -3,7 +3,7 @@ const Nutrition = require("../ModelS/NutritionSchema");
 
 exports.Nutritioncreate = tryCatch(async (req, res, next) => {
   const nutrition = await Nutrition.create({
-    userId: req.body.userId,
+    userId: req.user._id,
     foodItem: req.body.foodItem,
     foodType: req.body.foodType,
     quantity: req.body.quantity,
@@ -17,7 +17,12 @@ exports.Nutritioncreate = tryCatch(async (req, res, next) => {
 });
 
 exports.Nutritionall = tryCatch(async (req, res, next) => {
-  const nutritions = await Nutrition.find().populate("userId");
+  const nutritions = await Nutrition.find();
+  res.json(nutritions);
+});
+
+exports.Nutritionget = tryCatch(async (req, res, next) => {
+  const nutritions = await Nutrition.findById(req.params.id);
   res.json(nutritions);
 });
 

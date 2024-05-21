@@ -6,12 +6,12 @@ const nutritionSchema = mongoose.Schema({
     ref: "users",
     required: true,
   },
-  foodType: [
+  foodType: 
     {
       type: String,
       required: true,
     },
-  ],
+  
   foodItem: 
     {
       type: [String],
