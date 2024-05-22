@@ -2,24 +2,18 @@ const Progress = require("../Models/ProgressSchema");
 const tryCatch = require("../Utils/tryCatch");
 
 exports.FitnessProgresscreate = tryCatch(async (req, res, next) => {
-  const { userId, weight, bodyMeasurements, performanceMetrics } = req.body;
 
-  if (!userId || !weight || !bodyMeasurements || !performanceMetrics) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
+  
   const progress = await Progress.create({
-    userId,
-    weight,
-    bodyMeasurements: {
-      waist: bodyMeasurements.waist,
-      shoulder: bodyMeasurements.shoulder,
-      arms: bodyMeasurements.arms,
-      legs: bodyMeasurements.legs,
-    },
-    performanceMetrics: {
-      runTime: performanceMetrics.runTime,
-      liftingWeight: performanceMetrics.liftingWeight,
-    },
+    userId:req.user._id,
+    weight:req.body.weight,
+    waist: req.body.waist,
+    shoulder: req.body.shoulder,
+    arms: req.body.arms,
+    legs: req.body.legs,
+    runTime: req.body.runTime,
+    liftingWeight: req.body.liftinWeight
+    ,
   });
 
   res.status(201).json({
@@ -30,6 +24,11 @@ exports.FitnessProgresscreate = tryCatch(async (req, res, next) => {
 
 exports.FitnessProgressall = tryCatch(async (req, res, next) => {
   const progress = await Progress.find().populate("userId");
+  res.json(progress);
+});
+
+exports.FitnessProgressget = tryCatch(async (req, res, next) => {
+  const progress = await Progress.findById(req.params.id);
   res.json(progress);
 });
 
@@ -49,27 +48,17 @@ exports.FitnessProgressdelete = tryCatch(async (req, res, next) => {
 
 exports.FitnessProgressupdate = tryCatch(async (req, res, next) => {
   const { id } = req.params;
-  const { userId, weight, bodyMeasurements, performanceMetrics } = req.body;
-
-  if (!userId || !weight || !bodyMeasurements || !performanceMetrics) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
+  
   const progress = await Progress.findByIdAndUpdate(
     id,
     {
-      userId,
-      weight,
-      bodyMeasurements: {
-        waist: bodyMeasurements.waist,
-        shoulder: bodyMeasurements.shoulder,
-        arms: bodyMeasurements.arms,
-        legs: bodyMeasurements.legs,
-      },
-      performanceMetrics: {
-        runTime: performanceMetrics.runTime,
-        liftingWeight: performanceMetrics.liftingWeight,
-      },
+      weight:req.body.weight,
+      waist: req.body.waist,
+      shoulder: req.body.shoulder,
+      arms: req.body.arms,
+      legs: req.body.legs,
+      runTime: req.body.runTime,
+      liftingWeight: req.body.liftinWeight
     },
     { new: true, runValidators: true }
   );

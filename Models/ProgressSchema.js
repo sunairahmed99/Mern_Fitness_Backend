@@ -11,7 +11,7 @@ const fitnessprogressSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  bodyMeasurements: {
+
     waist: {
       type: Number,
       required: true,
@@ -28,8 +28,6 @@ const fitnessprogressSchema = mongoose.Schema({
       type: Number,
       required: true,
     },
-  },
-  performanceMetrics: {
     runTime: {
       type: Number,
       required: true,
@@ -38,7 +36,6 @@ const fitnessprogressSchema = mongoose.Schema({
       type: Number,
       required: true,
     },
-  },
   createdate: {
     type: Date,
     default: Date.now,
