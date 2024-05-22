@@ -2,16 +2,13 @@ const SupportSystem = require("../Models/SupportSystemSchema");
 const tryCatch = require("../Utils/tryCatch");
 
 exports.SupportSystemcreate = tryCatch(async (req, res, next) => {
-  const { userId, type, description, priority } = req.body;
-
-  if (!userId || !type || !description || !priority) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
+  
+  
   const supportsystem = await SupportSystem.create({
-    userId,
-    type,
-    description,
-    priority,
+    userId : req.user.id,
+    type : req.body.stype,
+    description : req.body.sdescription,
+    priority : req.body.spriority,
   });
 
   res.status(201).json({
@@ -22,5 +19,10 @@ exports.SupportSystemcreate = tryCatch(async (req, res, next) => {
 
 exports.SupportSystemall = tryCatch(async (req, res, next) => {
   const supports = await SupportSystem.find();
+  res.status(200).json({ success: true, data: supports });
+});
+
+exports.SupportSystemdel = tryCatch(async (req, res, next) => {
+  const supports = await SupportSystem.findByIdAndDelete(req.params.id);
   res.status(200).json({ success: true, data: supports });
 });
