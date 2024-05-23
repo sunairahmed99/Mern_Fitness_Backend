@@ -23,7 +23,7 @@ exports.FitnessProgresscreate = tryCatch(async (req, res, next) => {
 });
 
 exports.FitnessProgressall = tryCatch(async (req, res, next) => {
-  const progress = await Progress.find().populate("userId");
+  const progress = await Progress.find({userId:req.user._id}).populate("userId");
   res.json(progress);
 });
 

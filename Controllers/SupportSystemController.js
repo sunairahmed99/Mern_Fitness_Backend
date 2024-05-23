@@ -18,7 +18,7 @@ exports.SupportSystemcreate = tryCatch(async (req, res, next) => {
 });
 
 exports.SupportSystemall = tryCatch(async (req, res, next) => {
-  const supports = await SupportSystem.find();
+  const supports = await SupportSystem.find({userId:req.user._id}).populate('userId');
   res.status(200).json({ success: true, data: supports });
 });
 

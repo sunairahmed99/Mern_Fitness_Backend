@@ -5,11 +5,12 @@ const {
   Workoutdelete,
   Workoutall,
 } = require("../Controllers/WorkoutController");
+const { protect } = require("../Controllers/AuthController");
 
 const WorkoutRouter = express.Router();
-WorkoutRouter.route("/Add").post(Workoutcreate);
-WorkoutRouter.route("/All").get(Workoutall);
-WorkoutRouter.route("/Update/:id").put(Workoutupdate);
-WorkoutRouter.route("/Delete/:id").delete(Workoutdelete);
+WorkoutRouter.route("/Add").post(protect,Workoutcreate);
+WorkoutRouter.route("/All").get(protect,Workoutall);
+WorkoutRouter.route("/Update/:id").put(protect,Workoutupdate);
+WorkoutRouter.route("/Delete/:id").delete(protect,Workoutdelete);
 
 module.exports = WorkoutRouter;

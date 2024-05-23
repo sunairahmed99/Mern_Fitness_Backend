@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const supportsystemSchema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "users",
     required: true,
   },
   type: {

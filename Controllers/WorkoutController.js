@@ -17,7 +17,7 @@ exports.Workoutcreate = tryCatch(async (req, res, next) => {
 });
 
 exports.Workoutall = tryCatch(async (req, res, next)=>{
-  const workouts = await Workout.find().populate('userId');
+  const workouts = await Workout.find({id:req.user._id}).populate('userId');
   res.json(workouts);
 })
 

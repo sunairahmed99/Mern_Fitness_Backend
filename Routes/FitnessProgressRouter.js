@@ -11,8 +11,8 @@ const { protect } = require("../Controllers/AuthController");
 const FitnessProgressRouter = express.Router();
 FitnessProgressRouter.route("/Add").post(protect,FitnessProgresscreate);
 FitnessProgressRouter.route("/get/:id").get(protect,FitnessProgressget);
-FitnessProgressRouter.route("/All").get(FitnessProgressall);
-FitnessProgressRouter.route("/Update/:id").patch(FitnessProgressupdate);
-FitnessProgressRouter.route("/Delete/:id").delete(FitnessProgressdelete);
+FitnessProgressRouter.route("/All").get(protect,FitnessProgressall);
+FitnessProgressRouter.route("/Update/:id").patch(protect,FitnessProgressupdate);
+FitnessProgressRouter.route("/Delete/:id").delete(protect,FitnessProgressdelete);
 
 module.exports = FitnessProgressRouter;
