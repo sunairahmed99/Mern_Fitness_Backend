@@ -16,6 +16,26 @@ exports.getuser = tryCatch(async(req,res,next)=>{
     })
 })
 
+exports.getalluser = tryCatch(async(req,res,next)=>{
+
+    let newuser = await users.find({role:"user"})
+
+    res.status(200).json({
+        status:"success",
+        data:newuser
+    })
+})
+
+exports.deluser = tryCatch(async(req,res,next)=>{
+
+    let newuser = await users.findByIdAndDelete(req.params.id)
+
+    res.status(200).json({
+        status:"success",
+        data:newuser
+    })
+})
+
 exports.RegisterUser = tryCatch(async(req,res,next)=>{
 
     let image

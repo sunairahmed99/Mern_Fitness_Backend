@@ -1,10 +1,12 @@
 const express = require('express');
-const { RegisterUser, loginUser, protect, forgotpass, resetpass, getuser, updateprofile, updatepassword } = require('../Controllers/AuthController');
+const { RegisterUser, loginUser, protect, forgotpass, resetpass, getuser, updateprofile, updatepassword, getalluser, deluser } = require('../Controllers/AuthController');
 const Userupload = require('../Multer/Multer');
 
 const UserRouter = express.Router()
 
 UserRouter.route('/getuser').get(protect,getuser)
+UserRouter.route('/getall').get(protect,getalluser)
+UserRouter.route('/del/:id').delete(protect,deluser)
 UserRouter.route('/register').post(Userupload.single('image'),RegisterUser)
 UserRouter.route('/login').post(loginUser)
 UserRouter.route('/updatepassword').patch(protect,updatepassword)
