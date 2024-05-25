@@ -22,6 +22,11 @@ exports.SupportSystemall = tryCatch(async (req, res, next) => {
   res.status(200).json({ success: true, data: supports });
 });
 
+exports.SupportSystemalladmin = tryCatch(async (req, res, next) => {
+  const supports = await SupportSystem.find().populate('userId');
+  res.status(200).json({ success: true, data: supports });
+});
+
 exports.SupportSystemdel = tryCatch(async (req, res, next) => {
   const supports = await SupportSystem.findByIdAndDelete(req.params.id);
   res.status(200).json({ success: true, data: supports });

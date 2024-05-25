@@ -27,6 +27,11 @@ exports.FitnessProgressall = tryCatch(async (req, res, next) => {
   res.json(progress);
 });
 
+exports.FitnessProgressalladmin = tryCatch(async (req, res, next) => {
+  const progress = await Progress.find().populate("userId");
+  res.json(progress);
+});
+
 exports.FitnessProgressget = tryCatch(async (req, res, next) => {
   const progress = await Progress.findById(req.params.id);
   res.json(progress);

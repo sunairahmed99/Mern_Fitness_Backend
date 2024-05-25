@@ -21,6 +21,11 @@ exports.Nutritionall = tryCatch(async (req, res, next) => {
   res.json(nutritions);
 });
 
+exports.Nutritionalladmin = tryCatch(async (req, res, next) => {
+  const nutritions = await Nutrition.find().populate('userId');
+  res.json(nutritions);
+});
+
 exports.Nutritionget = tryCatch(async (req, res, next) => {
   const nutritions = await Nutrition.findById(req.params.id);
   res.json(nutritions);
